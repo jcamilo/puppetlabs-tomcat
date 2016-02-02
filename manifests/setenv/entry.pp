@@ -20,6 +20,8 @@ define tomcat::setenv::entry (
   # Deprecated
   $base_path   = undef,
   $order       = 10,
+  $user,
+  $group,
 ) {
 
   if $base_path {
@@ -37,8 +39,8 @@ define tomcat::setenv::entry (
 
   if ! defined(Concat[$_config_file]) {
     concat { $_config_file:
-      owner          => $::tomcat::user,
-      group          => $::tomcat::group,
+      owner          => $user,
+      group          => $group,
       ensure_newline => true,
     }
   }
