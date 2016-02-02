@@ -15,6 +15,8 @@ define tomcat::instance::source (
   $catalina_base,
   $source_url,
   $source_strip_first_dir = undef,
+  $user,
+  $group,
 ) {
   include staging
 
@@ -39,8 +41,8 @@ define tomcat::instance::source (
     target  => $catalina_base,
     require => Staging::File[$filename],
     unless  => "test \"\$(ls -A ${catalina_base})\"",
-    user    => $::tomcat::user,
-    group   => $::tomcat::group,
+    user    => $user,
+    group   => $group,
     strip   => $_strip,
   }
 }
