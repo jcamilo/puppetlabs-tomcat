@@ -27,6 +27,8 @@ define tomcat::instance (
   $package_ensure         = undef,
   $package_name           = undef,
   $package_options        = undef,
+  $user,
+  $group,
 ) {
 
   if $install_from_source {
@@ -73,6 +75,8 @@ define tomcat::instance (
       source_url             => $source_url,
       source_strip_first_dir => $source_strip,
       require                => File[$_catalina_base],
+      user                   => $user,
+      group                  => $group,
     }
   } else {
     tomcat::instance::package { $package_name:
@@ -84,8 +88,8 @@ define tomcat::instance (
   if $install_from_source and $_catalina_base != $_catalina_home {
     file { $_catalina_base:
       ensure => directory,
-      owner  => $::tomcat::user,
-      group  => $::tomcat::group,
+      owner  => $user,
+      group  => $group,
     }
   }
 }
